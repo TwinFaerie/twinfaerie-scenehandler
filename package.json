@@ -1,0 +1,37 @@
+{
+  "name": "com.twinfaerie.scenehandler",
+  "version": "1.0.0",
+  "displayName": "TwinFaerie Scene-Handler",
+  "description": "For standarize scene change behaviour using login scene as overlay",
+  "unity": "2020.3",
+  "documentationUrl": "https://github.com/TwinFaerie/twinfaerie-scenehandler/",
+  "changelogUrl": "https://github.com/TwinFaerie/twinfaerie-scenehandler/releases",
+  "licensesUrl": "https://github.com/TwinFaerie/twinfaerie-scenehandler/blob/main/LICENSE",
+  "author": {
+    "name": "CuteRogue",
+    "email": "cuterogue@twinfaerie.my.id",
+    "url": "https://www.twinfaerie.my.id/cuterogue"
+  },
+  "samples": [
+    {
+        "displayName": "Example Usage",
+        "description": "Adding Example Implementation to the module",
+        "path": "Samples~/SceneHandlerExample"
+    },
+    {
+        "displayName": "Example Usage - With UniTask",
+        "description": "Adding Example Implementation to the module if Cysharp UniTask is Installed",
+        "path": "Samples~/SceneHandlerAsyncExample"
+    },
+    {
+        "displayName": "Example Usage - With SceneReference",
+        "description": "Adding Example Implementation to the module if Elfatun SceneReference is Installed",
+        "path": "Samples~/SceneHandlerRefExample"
+    },
+    {
+        "displayName": "Example Usage - With UniTask and SceneReference",
+        "description": "Adding Example Implementation to the module if Cysharp UniTask and Elfatun SceneReference is Installed",
+        "path": "Samples~/SceneHandlerAsyncRefExample"
+    }
+  ]
+}

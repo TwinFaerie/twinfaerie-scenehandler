@@ -1,0 +1,28 @@
+{
+    "name": "TwinFaerie.SceneHandler",
+    "rootNamespace": "",
+    "references": [
+        "Eflatun.SceneReference",
+        "UniTask"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [
+        {
+            "name": "com.eflatun.scenereference",
+            "expression": "3.1.1",
+            "define": "TF_HAS_SCENEREFERENCE"
+        },
+        {
+            "name": "com.cysharp.unitask",
+            "expression": "2.3.3",
+            "define": "TF_HAS_UNITASK"
+        }
+    ],
+    "noEngineReferences": false
+}
