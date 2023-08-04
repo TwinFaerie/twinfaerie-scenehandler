@@ -17,7 +17,7 @@ namespace TF.SceneHandler
         private bool isInitialized = false;
         private SceneHandlerController controller;
 
-        public bool IsSystemReady => isInitialized;
+        public bool IsReady => isInitialized;
         public SceneHandlerController Controller => controller;
 
         public void Init()
@@ -36,7 +36,7 @@ namespace TF.SceneHandler
         public void ChangeScene(SceneData scene)
 #endif
         {
-            if (!IsSystemReady)
+            if (!IsReady)
             { return; }
 
 #if TF_HAS_UNITASK
@@ -52,7 +52,7 @@ namespace TF.SceneHandler
         public void ChangeScene(List<SceneData> scene)
 #endif
         {
-            if (!IsSystemReady)
+            if (!IsReady)
             { return; }
 
 #if TF_HAS_UNITASK
@@ -68,7 +68,7 @@ namespace TF.SceneHandler
         public void LoadSceneAdditive(SceneData scene)
 #endif
         {
-            if (!IsSystemReady)
+            if (!IsReady)
             { return; }
 
 #if TF_HAS_UNITASK
@@ -84,7 +84,7 @@ namespace TF.SceneHandler
         public void UnloadSceneAdditive(SceneData scene)
 #endif
         {
-            if (!IsSystemReady)
+            if (!IsReady)
             { return; }
 
 #if TF_HAS_UNITASK
