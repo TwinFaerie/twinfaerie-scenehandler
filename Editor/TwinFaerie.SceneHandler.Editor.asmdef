@@ -1,0 +1,25 @@
+{
+    "name": "TwinFaerie.SceneHandler.Editor",
+    "rootNamespace": "",
+    "references": [
+        "TwinFaerie.SceneHandler",
+        "TwinFaerie.OdinExtendedInspector.Editor"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [
+        {
+            "name": "com.twinfaerie.odinextendedinspector",
+            "expression": "1.0.0",
+            "define": "TF_HAS_TFODINEXTENDER"
+        }
+    ],
+    "noEngineReferences": false
+}
