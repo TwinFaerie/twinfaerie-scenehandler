@@ -1,5 +1,12 @@
 # Overview
-This module created to centralize scriptable object used for in-game setting
+This module created for easier handling on scene, we separate scene into 2 type:
+- Loading => overlay scene that shown when real scene is loading
+- Normal => the real scene
+
+# Installation
+You can just use Unity Package Manager and use either Git URL or OpenUPM URL down below.  
+- Github: TODO
+- OpenUPM: TODO
 
 # How To Use
 TODO
