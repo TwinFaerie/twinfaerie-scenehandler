@@ -58,23 +58,23 @@ namespace TF.SceneHandler
 #if TF_HAS_UNITASK
             await controller.SwitchToScene(scene);
 #else
-            StartCoroutine(controller.SwitchToScene(scene));
+            StartCoroutine(controller.SwitchToScene(scene);
 #endif
         }
 
 #if TF_HAS_UNITASK
-        public async UniTask LoadSceneAdditive(SceneData scene)
+        public async UniTask LoadSceneAdditive(SceneData scene, bool isMainScene = true, bool waitForActivation = false)
 #else
-        public void LoadSceneAdditive(SceneData scene)
+        public void LoadSceneAdditive(SceneData scene, bool isMainScene = true, bool waitForActivation = false)
 #endif
         {
             if (!IsReady)
             { return; }
 
 #if TF_HAS_UNITASK
-            await controller.LoadScene(scene);
+            await controller.LoadScene(scene, isMainScene, waitForActivation);
 #else
-            StartCoroutine(controller.LoadScene(scene));
+            StartCoroutine(controller.LoadScene(scene, isMainScene, waitForActivation));
 #endif
         }
 

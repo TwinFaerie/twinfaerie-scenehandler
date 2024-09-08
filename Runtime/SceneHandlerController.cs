@@ -97,9 +97,9 @@ namespace TF.SceneHandler
         }
 
 #if TF_HAS_UNITASK
-        public async UniTask SwitchToScene(IEnumerable<SceneData> scenes, SceneData mainScene = null)
+        public async UniTask SwitchToScene(IEnumerable<SceneData> scenes)
 #else
-        public IEnumerator SwitchToScene(IEnumerable<SceneData> scenes, SceneData mainScene = null)
+        public IEnumerator SwitchToScene(IEnumerable<SceneData> scenes)
 #endif
         {
 #if TF_HAS_UNITASK
@@ -110,16 +110,16 @@ namespace TF.SceneHandler
         }
 
 #if TF_HAS_UNITASK
-        public async UniTask SwitchToScene(SceneData scene, bool isMainScene = true)
+        public async UniTask SwitchToScene(SceneData scene)
 #else
-        public IEnumerator SwitchToScene(SceneData scene, bool isMainScene = true)
+        public IEnumerator SwitchToScene(SceneData scene)
 #endif
         {
-            var scenes = new List<SceneData>() { scene };
+            var scenes = new List<SceneData> { scene };
 #if TF_HAS_UNITASK
-            await SwitchToScene(scenes, isMainScene ? scene : null);
+            await SwitchToScene(scenes);
 #else
-            yield return manager.StartCoroutine(SwitchToScene(scenes, isMainScene ? scene : null));
+            yield return manager.StartCoroutine(SwitchToScene(scenes));
 #endif
         }
 
@@ -242,7 +242,7 @@ namespace TF.SceneHandler
             var whileLoadingObjects = new List<WhileLoadingBehaviour>();
             foreach (var item in asyncLoads.Keys.Where(item => item.SceneType is SceneType.LOADING))
             {
-                var objectsFound = Object.FindObjectsOfType<WhileLoadingBehaviour>();
+                var objectsFound = Object.FindObjectsByType<WhileLoadingBehaviour>(FindObjectsSortMode.None);
                 foreach (var objectItem in objectsFound)
                 {
                     objectItem.LoadScene();
@@ -292,7 +292,7 @@ namespace TF.SceneHandler
             var whileLoadingObjects = new List<WhileLoadingBehaviour>();
             foreach (var item in scenes.Where(item => item.SceneType is SceneType.LOADING))
             {
-                var objectsFound = Object.FindObjectsOfType<WhileLoadingBehaviour>();
+                var objectsFound = Object.FindObjectsByType<WhileLoadingBehaviour>(FindObjectsSortMode.None);
                 foreach (var objectItem in objectsFound)
                 {
                     objectItem.UnloadScene();
@@ -351,10 +351,11 @@ namespace TF.SceneHandler
         public IEnumerator SwitchToSceneProcess(IEnumerable<SceneData> scenes)
 #endif
         {
+            var loadingScenes = scenes.Where(item => item.SceneType is SceneType.LOADING);
 #if TF_HAS_UNITASK
-            await LoadScene(scenes.Where(item => item.SceneType is SceneType.LOADING));
+            await LoadScene(loadingScenes, loadingScenes.First());
 #else
-            yield return manager.StartCoroutine(LoadScene(scenes.Where(item => item.SceneType is SceneType.LOADING)));
+            yield return manager.StartCoroutine(LoadScene(loadingScenes, loadingScenes.First()));
 #endif
 
 #if TF_HAS_UNITASK
@@ -370,11 +371,32 @@ namespace TF.SceneHandler
 #else
             yield return manager.StartCoroutine(UnloadAllNormalScene());
 #endif
+            
+            var whileLoadingObjects = new List<WhileLoadingBehaviour>();
+            foreach (var item in scenes.Where(item => item.SceneType is SceneType.LOADING))
+            {
+                var objectsFound = Object.FindObjectsByType<WhileLoadingBehaviour>(FindObjectsSortMode.None);
+                foreach (var objectItem in objectsFound)
+                {
+                    objectItem.Loading();
+                }
+
+                whileLoadingObjects.AddRange(objectsFound);
+            }
 
 #if TF_HAS_UNITASK
-            await LoadScene(scenes.Where(item => item.SceneType is SceneType.NORMAL));
+            await new WaitUntil(() => 
 #else
-            yield return manager.StartCoroutine(LoadScene(scenes.Where(item => item.SceneType is SceneType.NORMAL)));
+            yield return new WaitUntil(() =>
+#endif
+                whileLoadingObjects.All(item => item.IsLoadingCompleted)
+            );
+
+            var newNormalScenes = scenes.Where(item => item.SceneType is SceneType.NORMAL);
+#if TF_HAS_UNITASK
+            await LoadScene(newNormalScenes, newNormalScenes.First());
+#else
+            yield return manager.StartCoroutine(LoadScene(newNormalScenes, newNormalScenes.First()));
 #endif
 
 #if TF_HAS_UNITASK
