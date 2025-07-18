@@ -10,7 +10,7 @@ namespace TF.SceneHandler.Model
     public class SceneData : ScriptableObject
     {
 #if TF_HAS_SCENEREFERENCE
-        [SerializeField] private SceneReference scene;
+        [SerializeField] private SceneReference sceneRef;
         private string sceneName = string.Empty;
 #else
         [SerializeField] private string sceneName;
@@ -18,22 +18,18 @@ namespace TF.SceneHandler.Model
         [SerializeField] private SceneType sceneType;
 
 #if TF_HAS_SCENEREFERENCE
-        public string SceneName => string.IsNullOrEmpty(sceneName) ? scene.Name : sceneName;
+        public SceneReference SceneRef => sceneRef;
+        public string SceneName { get { try { return sceneRef.Name; } catch { return sceneName; } } }
 #else
         public string SceneName => sceneName;
 #endif
         public SceneType SceneType => sceneType;
 
-        protected void Setup(string sceneName, SceneType sceneType)
-        {
-            this.sceneName = sceneName;
-            this.sceneType = sceneType;
-        }
-
         public static SceneData Create(string sceneName, SceneType sceneType)
         {
             var result = CreateInstance<SceneData>();
-            result.Setup(sceneName, sceneType);
+            result.sceneName = sceneName;
+            result.sceneType = sceneType;
             return result;
         }
     }

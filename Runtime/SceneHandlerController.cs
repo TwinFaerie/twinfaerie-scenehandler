@@ -19,8 +19,6 @@ namespace TF.SceneHandler
         private bool isLoadComplete = true;
         private bool isUnloadComplete = true;
 
-        private readonly List<SceneData> activeScenes = new();
-
         private Scene lastActiveScene;
         private Scene currentActiveScene;
 
@@ -31,10 +29,10 @@ namespace TF.SceneHandler
         public bool IsUnloading => UnloadProgress < 1.0f || !isUnloadComplete;
         public bool IsOnProgress => IsLoading || IsUnloading;
 
-        public IEnumerable<SceneData> ActiveScenes => activeScenes;
-        public IEnumerable<SceneData> ActiveNormalScenes => activeScenes.Where(item => item.SceneType is SceneType.NORMAL);
-        public IEnumerable<SceneData> ActiveLoadingScenes => activeScenes.Where(item => item.SceneType is SceneType.LOADING);
-
+        public readonly List<SceneData> ActiveScenes = new();
+        public IEnumerable<SceneData> ActiveNormalScenes => ActiveScenes.Where(item => item.SceneType is SceneType.NORMAL);
+        public IEnumerable<SceneData> ActiveLoadingScenes => ActiveScenes.Where(item => item.SceneType is SceneType.LOADING);
+        
 #if !TF_HAS_UNITASK
         private MonoBehaviour manager;
 #endif
@@ -46,7 +44,7 @@ namespace TF.SceneHandler
 #endif
         {
             // assume any scene the game started always is normal scenes
-            activeScenes.AddRange(GetAllLoadedScene().Select(item => SceneData.Create(item.name, SceneType.NORMAL)));
+            ActiveScenes.AddRange(GetAllLoadedScene().Select(item => SceneData.Create(item.name, SceneType.NORMAL)));
 #if !TF_HAS_UNITASK
             this.manager = manager;
 #endif
@@ -228,7 +226,7 @@ namespace TF.SceneHandler
                     item.Value.allowSceneActivation = true;
                 }
 
-                activeScenes.Add(item.Key);
+                ActiveScenes.Add(item.Key);
             }
 
 #if TF_HAS_UNITASK
@@ -333,7 +331,7 @@ namespace TF.SceneHandler
 
             foreach (var item in asyncLoads.Keys)
             {
-                activeScenes.Remove(item);
+                ActiveScenes.Remove(item);
             }
 
             if (lastActiveScene.isLoaded)
